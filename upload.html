@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사진 업로드</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        section {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 80%;
+            height: auto;
+            display: none; /* 처음에는 숨김 처리 */
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>사진 업로드</h1>
+    </header>
+
+    <section>
+        <h2>사진을 업로드하세요</h2>
+        <form id="upload-form">
+            <label for="file-upload">파일 선택:</label>
+            <input type="file" id="file-upload" name="file" accept="image/*">
+            <button type="submit">업로드</button>
+        </form>
+        <!-- 큰 화면에 보여줄 이미지 -->
+        <img id="large-preview" alt="업로드된 이미지 미리보기">
+    </section>
+
+    <script>
+        // 파일 선택 이벤트 처리
+        let selectedFile = null; // 선택된 파일을 저장할 변수
+
+        document.getElementById('file-upload').addEventListener('change', function(event) {
+            selectedFile = event.target.files[0];
+        });
+
+        // 폼 제출 시 이미지 미리보기를 보여줌
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+
+            if (selectedFile) {
+                const reader = new FileReader();
+
+                // 파일을 읽었을 때 실행될 함수
+                reader.onload = function(e) {
+                    const imgElement = document.getElementById('large-preview');
+                    imgElement.src = e.target.result; // base64 인코딩된 이미지 데이터
+                    imgElement.style.display = 'block'; // 이미지를 보이게 설정
+                };
+
+                reader.readAsDataURL(selectedFile); // 파일을 base64 URL로 변환
+            } else {
+                alert('파일을 선택하세요.');
+            }
+        });
+    </script>
+
+</body>
+</html>
